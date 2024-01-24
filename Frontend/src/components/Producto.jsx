@@ -1,33 +1,32 @@
 import useProductos from "../hooks/useProductos"
 import { Link } from "react-router-dom"
 const Producto = () => {
-    const {productos} = useProductos()
-    
+  const { productos } = useProductos()
   return (
-    <div className="grid grid-cols-4 w-auto p-16">
-    {productos.length !== 0 ? (
-      productos.map((producto) => (
-        <div key={producto.id} className="max-w-md mx-4 my-4 bg-white rounded-lg overflow-hidden shadow-md">
-          <div className="bg-blue-50-500 w-full h-52">
-           <img className="w-full h-full object-cover" src={producto.img} alt={producto.name} />
-          </div>
-          <div className="p-4 h-full">
-            <p className="text-center text-2xl font-bold mb-2">{producto.name}</p>
-            <div className="flex flex-wrap">
-             <p className="text-gray-700">{producto.description}</p>
-            </div>      
-            <div className="flex justify-between ">
-            <p className="text-green-300 block">{producto.price}$</p>
-            <p>garantía: {`${producto.warranty? 'Si' : 'No'}`}</p>
-            <Link className="border text-black font-bold rounded-lg" to={`${producto.nombre}`}>ver producto</Link>
+    <div className="flex flex-col justify-center items-center bg-gray-400">
+      {productos.length !== 0 ? (
+        productos.map((producto) => (
+          <tr key={producto.id} className="w-2/5 mt-4 rounded-lg bg-white ">
+            <div className="flex justify-between">
+              <td className="py-2 px-4 border-b size-36" >
+                <img className="w-full h-full object-cover size-4" src={producto.img} alt={producto.name} />
+              </td>
+              <div className="flex">
+                <td className="py-2 px-4 border-btext-center flex  flex-col text-center"> <span className="font-bold  text-center mb-5">Descripción del producto:</span>{producto.description}</td>
+                <td className="py-2 px-4 border-b text-center flex  flex-col"> <span className="font-bold  text-center mb-5">precio del producto:</span> {producto.price}</td>
+                <td className="py-2 px-4 border-b"> <span className=" block font-bold  text-center mb-10">Garantía:</span> {producto.warranty == true ? 'Si' : 'No'}</td>
+              </div>
             </div>
-          </div>
-        </div>
-      ))
-    ) : (
-      <h1>NO hay productos</h1>
-    )}
-  </div>
+            <td className="py-2 px-4 border-b flex justify-between ">
+              <Link className="border text-white text-center rounded-lg bg-blue-300 w-32" to={`${producto.nombre}`}>editar producto</Link>
+              <button className="bg-red-500 text-white py-1 px-2 rounded-lg">Eliminar</button>
+            </td>
+          </tr>
+        ))
+      ) : (
+        <h1>NO hay productos</h1>
+      )}
+    </div>
   )
 }
 
