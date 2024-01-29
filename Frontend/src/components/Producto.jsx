@@ -1,33 +1,43 @@
 import useProductos from "../hooks/useProductos"
 import { Link } from "react-router-dom"
+import Alert from "./Alert";
+
 const Producto = () => {
-  const { productos } = useProductos()
+  const { productos, eliminarProducto, alerta } = useProductos();
+
+  const handledName = (name) =>{
+   eliminarProducto(name)
+  }
+  const {msg} = alerta
   return (
-    <div className="flex flex-col justify-center items-center bg-gray-400">
+    <div  className="flex flex-col justify-center items-center bg-gray-400/10">
+      {msg && <Alert alerta={alerta} />}
       {productos.length !== 0 ? (
         productos.map((producto) => (
-          <tr key={producto.id} className="w-2/5 mt-4 rounded-lg bg-white ">
-            <div className="flex justify-between">
-              <td className="py-2 px-4 border-b size-36" >
+          <div key={producto.id} className="w-2/5 mt-4 rounded-lg bg-white border border-gray-300 p-4">
+            <div className="flex justify-between items-center">
+              <div className="py-2 px-4 ml-3 border-b size-36">
                 <img className="w-full h-full object-cover size-4" src={producto.img} alt={producto.name} />
-              </td>
-              <div className="flex">
-                <td className="py-2 px-4 border-btext-center flex  flex-col text-center"> <span className="font-bold  text-center mb-5">Descripción del producto:</span>{producto.description}</td>
-                <td className="py-2 px-4 border-b text-center flex  flex-col"> <span className="font-bold  text-center mb-5">precio del producto:</span> {producto.price}</td>
-                <td className="py-2 px-4 border-b"> <span className=" block font-bold  text-center mb-10">Garantía:</span> {producto.warranty == true ? 'Si' : 'No'}</td>
+              </div>
+              <div className="flex flex-col w-3/4 ml-4">
+                <div className="font-bold mb-2">Nombre: {producto.name}</div>
+                <div className="mb-2">Descripción del producto: {producto.description}</div>
+                <div className="mb-2">Precio del producto: {producto.price}</div>
+                <div>Garantía: {producto.warranty ? 'Si' : 'No'}</div>
               </div>
             </div>
-            <td className="py-2 px-4 border-b flex justify-between ">
-              <Link className="border text-white text-center rounded-lg bg-blue-300 w-32" to={`${producto.nombre}`}>editar producto</Link>
-              <button className="bg-red-500 text-white py-1 px-2 rounded-lg">Eliminar</button>
-            </td>
-          </tr>
+            <div className="flex justify-between mt-4">
+              <Link className="border text-white text-center rounded-lg bg-blue-300 w-32 mr-2" to={`/editar-producto/${producto.name}`}>Editar producto</Link>
+              <button className="bg-red-500 text-white py-1 px-2 rounded-lg" onClick={()=> handledName(producto.name)}>Eliminar</button>
+            </div>
+          </div>
         ))
       ) : (
         <h1>NO hay productos</h1>
       )}
     </div>
-  )
-}
+  );
+};
+
 
 export default Producto

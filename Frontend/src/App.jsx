@@ -16,7 +16,7 @@ function App() {
           <Routes>
            <Route  path="/" element={<Productos />} />
            <Route path="/crear-producto" element ={<CrearProducto />} />
-           <Route path=':nombre' element ={<EditarProducto />} />
+           <Route path='/editar-producto/:nombre' element={<EditarProducto />} />
           </Routes>
           </BaseLayout>
         </ProductosProvider>

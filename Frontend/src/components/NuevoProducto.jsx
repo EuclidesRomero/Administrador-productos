@@ -84,7 +84,7 @@ const NuevoProducto = () => {
                 <div className="mb-3">
                     <label className="block text-center font-bold " htmlFor="">Garantia</label>
                     <select className=" className=border-2 w-96 rounded-lg block mx-auto" value={warranty} onChange={e => setWarranty(e.target.value)}>
-                        <option value="" selected></option>
+                        <option value="" ></option>
                         <option value="true">SI</option>
                         <option value="false">NO</option>
                     </select>
