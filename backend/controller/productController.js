@@ -24,6 +24,7 @@ const crearProducto = async (req, res) =>{
         product.name = product.name.toLowerCase(); 
         await product.save();
         res.json({msg: "Producto guardado correctamente en el sistema"})
+        console.log('Se guardó un nuevo producto')
      }catch(error){
         res.status(403).json({msg: error.message})
      }
@@ -38,9 +39,10 @@ const mostrarProductos = async (req, res) =>{
     }
 }
 
-const eliminarProducto = async (req, res) => {
-    const {name} = req.body;
-    const nombre = await Producto.findOne({name})
+const eliminarProducto = async (req,res) => {
+    const name = req.params.name;
+    console.log('producto que se va a eliminar',name)
+    const nombre = await Producto.findOne({name})   
 
     if(!nombre){
         const error = new Error("El producto no se encuentra registrado o ingresó mal el nombre")
@@ -56,33 +58,39 @@ const eliminarProducto = async (req, res) => {
     }
 }
 
-const actualizarProducto = async(req, res) =>{
+const actualizarProducto = async (req, res) =>{
     const {name} = req.params
-
+    console.log('valor de name', name)
     const producto = await Producto.findOne({name})
 
-    if(!producto){
-        const error = new  Error('El producto no se encuentra registrado')
-        return res.status(404).json({
-            msg: error.message
-        })
-    }
-    producto.name = req.body.name || producto.name;
-    producto.description = req.body.description || producto.description;
-    producto.brand = req.body.brand || producto.brand;
-    producto.price = req.body.price || producto.price;
-    producto.img = req.body.img  || producto.price;
-    producto.warranty = req.body.warranty || producto.warranty;
-
-    try {
-        const productoAlmacenado = await producto.save()
-        res.json({msg: "El pructo ha sido actualizado con exito"})
-    } catch (error) {
-        return res.status(error.status || 500).json({msg: error.message})
+    if(producto){
+        producto.name = req.body.newName || producto.name;
+        producto.description = req.body.description || producto.description;
+        producto.brand = req.body.brand || producto.brand;
+        producto.price = req.body.price || producto.price;
+        producto.img = req.body.img  || producto.img;
+        producto.warranty = req.body.warranty || producto.warranty;
+        
+        try {
+            await producto.save()
+            res.json({msg: "El producto ha sido actualizado con exito"})
+            console.log('1')
+        } catch (error) {
+            console.log('2')
+            return res.status(error.status || 500).json({msg: error.message})
+        }
     }
 
+    else{
+            console.log('3')
+            const error = new Error('El producto no se encuentra registrado')
+            return res.status(404).json({
+                msg: error.message
+            })
+            
 
-
+    }
+    
 }
 export {
     crearProducto,
